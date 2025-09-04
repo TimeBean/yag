@@ -1,0 +1,69 @@
+# ----- Visual Studio / .NET build artifacts -----
+/bin/
+/obj/
+/publish/
+/out/
+
+# Build outputs for all configurations / target frameworks
+**/bin/
+**/obj/
+
+# apphost (иногда попадает в obj/bin)
+**/apphost
+
+# ----- Rider / JetBrains -----
+.idea/
+*.sln.iml
+/.idea
+
+# ----- Visual Studio user files -----
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vs/
+
+# ----- NuGet / paket -----
+*.nupkg
+packages/
+.project.nuget.cache
+project.lock.json
+project.assets.json
+
+# автоматически генерируемые NuGet файлы в obj
+**/*.nuget.g.props
+**/*.nuget.g.targets
+
+# Rider/.NET Rider metadata (в твоём дереве есть файлы rider.project.*)
+rider.project.model.*
+rider.*.nuget.*
+
+# ----- Logs, test results, coverage -----
+*.log
+TestResults/
+*.trx
+*.coverage
+coverage/
+
+# ----- Debug symbols / compiled files -----
+*.pdb
+*.dll
+*.exe
+
+# ----- IDE/editor -----
+.vscode/
+*.code-workspace
+
+# ----- Resharper / DotSettings -----
+_ReSharper*/
+*.DotSettings.user
+
+# ----- OS files -----
+.DS_Store
+Thumbs.db
+
+# ----- Misc -----
+*.cache
+*.bak
+*.tmp
+*.backup
