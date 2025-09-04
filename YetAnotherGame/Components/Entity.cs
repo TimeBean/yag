@@ -18,26 +18,32 @@ public class Entity : IObject
     {
         var newPosition = Position + deltaPosition;
 
-        if (map[newPosition.X, newPosition.Y].CanPassThrough)
+        var xMax = map.GetLength(0);
+        var yMax = map.GetLength(1);
+
+        if (newPosition.X < xMax && newPosition.Y < yMax)
         {
-            bool entityCanPassThrough = true;
-            
-            for (var i = 0; i < entities.Length; i++)
+            if (map[newPosition.X, newPosition.Y].CanPassThrough)
             {
-                if (Equals(entities[i].Position, newPosition))
+                bool entityCanPassThrough = true;
+
+                for (var i = 0; i < entities.Length; i++)
                 {
-                    entityCanPassThrough = false;
-                    break;
+                    if (Equals(entities[i].Position, newPosition))
+                    {
+                        entityCanPassThrough = false;
+                        break;
+                    }
+                }
+
+                if (entityCanPassThrough)
+                {
+                    Position += deltaPosition;
                 }
             }
 
-            if (entityCanPassThrough)
-            {
-                Position += deltaPosition;
-            }
+            DeltaPosition = Position.Zero;
         }
-
-        DeltaPosition = Position.Zero;
     }
 
     public void Seek(GameObject[,] map, Entity[] entities)
@@ -46,7 +52,7 @@ public class Entity : IObject
         var randomValue = random.Next(0, 4);
 
         Position seekPosition;
-        
+
         if (randomValue == 0)
         {
             seekPosition = Position.Left;
