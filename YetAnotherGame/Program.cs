@@ -16,7 +16,6 @@ class Program
         var map = InitializeMap(MapWidth, MapHeight);
         var entities = InitializeEntities();
 
-
         StartGame(map, entities);
     }
 
@@ -44,9 +43,7 @@ class Program
 
     private static Entity[] InitializeEntities()
     {
-        var Entities = new Entity[1];
-
-        Entities[0] = new Entity('@', new Position(3, 3));
+        var Entities = new[] { new Entity('@', new Position(3, 3)) };
 
         return Entities.ToArray();
     }
@@ -72,7 +69,7 @@ class Program
     private static void RenderMap(GameObject[,] map)
     {
         var stringBuilder = new StringBuilder();
-        
+
         for (int k = 0; k < TopOffset; k++)
         {
             stringBuilder.AppendLine();
@@ -84,7 +81,7 @@ class Program
             {
                 stringBuilder.Append(' ');
             }
-            
+
             for (var j = 0; j < map.GetLength(0); j++)
             {
                 stringBuilder.Append(map[j, i].Glyph);
@@ -101,7 +98,7 @@ class Program
         foreach (var entity in entities)
         {
             entity.MoveBy(new Position(1, 0));
-            
+
             Console.SetCursorPosition(entity.Position.X + LeftOffset, entity.Position.Y + TopOffset);
             Console.WriteLine(entity.Glyph);
         }
