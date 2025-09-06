@@ -6,8 +6,10 @@ namespace YetAnotherGame;
 
 class Program
 {
-    private const int MapWidth = 11 * 8;
-    private const int MapHeight = 5 * 8;
+    private const int Scale = 8;
+    
+    private const int MapWidth = 11 * Scale;
+    private const int MapHeight = 5 * Scale;
 
     private const int LeftOffset = 10;
     private const int TopOffset = 4;
