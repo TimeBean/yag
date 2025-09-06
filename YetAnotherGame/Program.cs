@@ -65,7 +65,7 @@ class Program
         while (true)
         {
             Console.Clear();
-            
+
             RenderMap(map);
             ProcessEntities(entities, map);
             RenderEntities(entities);
@@ -73,35 +73,35 @@ class Program
 
             Console.SetCursorPosition(MapWidth + LeftOffset + 1, MapHeight + TopOffset + 1);
 
-            var key = Console.ReadKey();
-            HandleInput(key, entities);
-
+            var key = Console.ReadKey(true);
+            if (HandleInput(key, entities[0]))
+                break;
+            
             tick++;
         }
     }
 
-    private static void HandleInput(ConsoleKeyInfo key, Entity[] entities)
+    /// <summary>
+    /// Processes player's input. Returns true if the application should be terminated otherwise set delta position to player (entities[0]).
+    /// </summary>
+    private static bool HandleInput(ConsoleKeyInfo key, Entity player)
     {
         if (key.Key == ConsoleKey.Q)
+            return true;
+
+        Position? move = key.Key switch
         {
-            Environment.Exit(0);
-        }
-        else if (key.Key == ConsoleKey.LeftArrow)
-        {
-            entities[0].DeltaPosition = Position.Left;
-        }
-        else if (key.Key == ConsoleKey.RightArrow)
-        {
-            entities[0].DeltaPosition = Position.Right;
-        }
-        else if (key.Key == ConsoleKey.UpArrow)
-        {
-            entities[0].DeltaPosition = Position.Up;
-        }
-        else if (key.Key == ConsoleKey.DownArrow)
-        {
-            entities[0].DeltaPosition = Position.Down;
-        }
+            ConsoleKey.LeftArrow => Position.Left,
+            ConsoleKey.RightArrow => Position.Right,
+            ConsoleKey.UpArrow => Position.Up,
+            ConsoleKey.DownArrow => Position.Down,
+            _ => null
+        };
+
+        if (move.HasValue)
+            player.DeltaPosition = move.Value;
+
+        return false;
     }
 
     private static void RenderMap(GameObject[,] map)
@@ -130,7 +130,7 @@ class Program
 
         Console.WriteLine(stringBuilder.ToString());
     }
-    
+
     private static void RenderEntities(Entity[] entities)
     {
         foreach (var entity in entities)
