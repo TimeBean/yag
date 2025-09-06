@@ -5,8 +5,8 @@ namespace YetAnotherGame;
 
 class Program
 {
-    private const int MapWidth = 22;
-    private const int MapHeight = 10;
+    private const int MapWidth = 44;
+    private const int MapHeight = 20;
 
     private const int LeftOffset = 10;
     private const int TopOffset = 4;
@@ -60,12 +60,12 @@ class Program
     {
         Console.Clear();
 
-        int tick = 0;
+        var tick = 0;
 
         while (true)
         {
             Console.Clear();
-
+            
             RenderMap(map);
             ProcessEntities(entities, map);
             RenderEntities(entities);
@@ -108,14 +108,14 @@ class Program
     {
         var stringBuilder = new StringBuilder();
 
-        for (int k = 0; k < TopOffset; k++)
+        for (var k = 0; k < TopOffset; k++)
         {
-            stringBuilder.AppendLine();
+            stringBuilder.Append('\n');
         }
 
         for (var i = 0; i < map.GetLength(1); i++)
         {
-            for (int k = 0; k < LeftOffset; k++)
+            for (var k = 0; k < LeftOffset; k++)
             {
                 stringBuilder.Append(' ');
             }
@@ -130,7 +130,7 @@ class Program
 
         Console.WriteLine(stringBuilder.ToString());
     }
-
+    
     private static void RenderEntities(Entity[] entities)
     {
         foreach (var entity in entities)
@@ -169,7 +169,8 @@ class Program
         for (var i = 0; i < entities.Length; i++)
         {
             Console.SetCursorPosition(MapWidth + LeftOffset + infoLeftOffset, TopOffset + 6 + i);
-            Console.WriteLine($"{entities[i].Glyph}, {{ {entities[i].Position.X}, {entities[i].Position.Y} }}, {entities[0].CanPassThrough}");
+            Console.WriteLine(
+                $"{entities[i].Glyph}, {{ {entities[i].Position.X}, {entities[i].Position.Y} }}, {entities[0].CanPassThrough}");
         }
     }
 }
