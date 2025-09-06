@@ -1,56 +1,35 @@
 ﻿using System.Text;
 using YetAnotherGame.Components;
+using YetAnotherGame.MapGenerator;
 
 namespace YetAnotherGame;
 
 class Program
 {
-    private const int MapWidth = 44;
-    private const int MapHeight = 20;
+    private const int MapWidth = 11 * 8;
+    private const int MapHeight = 5 * 8;
 
     private const int LeftOffset = 10;
     private const int TopOffset = 4;
 
+    private const int InfoLeftOffset = 3;
+
     static void Main(string[] args)
     {
-        var map = InitializeMap(MapWidth, MapHeight);
+        var seed = new Random().Next(int.MaxValue);
+
+        var generator = new MapGenerator.MapGenerator(width: MapWidth, height: MapHeight, seed: seed);
+        var map = generator.InitializeMap(seed: seed);
         var entities = InitializeEntities();
 
         StartGame(map, entities);
-    }
-
-    private static GameObject[,] InitializeMap(int width, int height)
-    {
-        var map = new GameObject[width, height];
-
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (i == 0 || j == 0 || i == width - 1 || j == height - 1)
-                {
-                    map[i, j] = new GameObject('#', j, i, false);
-                }
-                else
-                {
-                    map[i, j] = new GameObject('.', j, i, true);
-                }
-            }
-        }
-
-        map[3, 5] = new GameObject('F', 3, 5, false);
-        map[5, 7] = new GameObject('F', 5, 7, false);
-
-        return map;
     }
 
     private static Entity[] InitializeEntities()
     {
         var entities = new[]
         {
-            new Entity('@', new Position(3, 3)),
-            new Entity('&', new Position(5, 5)),
-            new Entity('&', new Position(7, 5))
+            new Entity('@', new Position(3, 3))
         };
 
         return entities.ToArray();
@@ -76,7 +55,7 @@ class Program
             var key = Console.ReadKey(true);
             if (HandleInput(key, entities[0]))
                 break;
-            
+
             tick++;
         }
     }
@@ -153,22 +132,20 @@ class Program
 
     private static void RenderInfo(int tick, Entity[] entities)
     {
-        var infoLeftOffset = 3;
-
-        Console.SetCursorPosition(MapWidth + LeftOffset + infoLeftOffset, TopOffset);
+        Console.SetCursorPosition(MapWidth + LeftOffset + InfoLeftOffset, TopOffset);
         Console.WriteLine($"Info:");
 
-        Console.SetCursorPosition(MapWidth + LeftOffset + infoLeftOffset, TopOffset + 2);
+        Console.SetCursorPosition(MapWidth + LeftOffset + InfoLeftOffset, TopOffset + 2);
         Console.WriteLine($"tick: {tick}");
 
-        Console.SetCursorPosition(MapWidth + LeftOffset + infoLeftOffset, TopOffset + 4);
+        Console.SetCursorPosition(MapWidth + LeftOffset + InfoLeftOffset, TopOffset + 4);
         Console.WriteLine("movement: arrows");
-        Console.SetCursorPosition(MapWidth + LeftOffset + infoLeftOffset, TopOffset + 5);
+        Console.SetCursorPosition(MapWidth + LeftOffset + InfoLeftOffset, TopOffset + 5);
         Console.WriteLine("exit: q");
 
         for (var i = 0; i < entities.Length; i++)
         {
-            Console.SetCursorPosition(MapWidth + LeftOffset + infoLeftOffset, TopOffset + 6 + i);
+            Console.SetCursorPosition(MapWidth + LeftOffset + InfoLeftOffset, TopOffset + 6 + i);
             Console.WriteLine(
                 $"{entities[i].Glyph}, {{ {entities[i].Position.X}, {entities[i].Position.Y} }}, {entities[0].CanPassThrough}");
         }
